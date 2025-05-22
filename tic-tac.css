@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  display: inline-block; /* Keeps the background color limited to the text width */
+  background-color: #000000; /* Desired background color */
+  color: wheat; /* Text color */
+  padding: 10px; /* Padding around the text */
+  border-radius: 10px; /* Rounded corners for styling */
+  font-weight: bold; /* Bold text for emphasis */
+  margin-top: 50px; /* Creates space from the top of the browser screen */
+}
+
+body {
+  background: linear-gradient(139deg, #7b4399, #b22222);
+  text-align: center;
+  background-image: url(istockphoto-1486667052-612x612.jpg);
+}
+
+.container {
+  padding-top: 60px;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5vmin;
+}
+
+.game {
+  height: 60vmin;
+  width: 60vmin;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5vmin;
+}
+
+.box {
+  height: 18vmin;
+  width: 18vmin;
+  border-radius: 2rem;
+  border: none;
+  transition: background-color 0.5s ease; /* Smooth transition for background color change */
+}
+
+.box:focus {
+  background-color: #8b4513;
+}
+
+.reset {
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  height: 60vmin;
+}
+
+#resgame {
+  height: 40px;
+  width: 100px;
+  color: whitesmoke;
+  background-color: blue;
+  border-radius: 1rem;
+  transition: color 0.3s ease;
+}
+
+#resgame:hover {
+  background-color: #7b4399;
+  cursor: pointer; /* Indicate interactiveness */
+}
+
+.mssg-container {
+  font-weight: bolder;
+  font-size: 3rem;
+  display: none;
+}
+#mssg {
+  display: inline-block;
+  color: black;
+  background-color: #ffd700;
+}

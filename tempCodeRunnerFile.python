@@ -1,0 +1,72 @@
+import cv2
+from deepface import DeepFace
+
+# Function to capture face from webcam
+def capture_face():
+    cam = cv2.VideoCapture(0)
+    print("📸 Capturing your facial expression... Look at the camera.")
+    
+    # Load the pre-trained face detection model from OpenCV (Haar Cascade)
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    
+    while True:
+        ret, frame = cam.read()
+        if not ret:
+            print("❌ Failed to capture image.")
+            break
+
+        # Convert the frame to grayscale for face detection
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Detect faces in the frame
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+        # If faces are detected, draw a red box around them
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+        # Display the captured frame in a window
+        cv2.imshow("Webcam - Facial Emotion Detection", frame)
+
+        # Press 'q' to stop the camera feed
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cam.release()
+    cv2.destroyAllWindows()
+    return frame, faces
+
+# Function to analyze facial emotion
+def analyze_face(frame, faces):
+    try:
+        # If faces are detected, analyze the first face
+        if len(faces) > 0:
+            # Crop the face from the frame
+            (x, y, w, h) = faces[0]
+            face = frame[y:y + h, x:x + w]
+
+            # Analyze the facial emotion using DeepFace
+            result = DeepFace.analyze(face, actions=['emotion'], enforce_detection=False)
+            emotion = result[0]['dominant_emotion']
+            return emotion
+        else:
+            return "No face detected"
+    except Exception as e:
+        print("⚠️ Error analyzing face:", str(e))
+        return "Error in analysis"
+
+# Main program loop
+while True:
+    frame, faces = capture_face()
+    if frame is not None and faces is not None:
+        # Analyze the face for emotion
+        face_emotion = analyze_face(frame, faces)
+        print(f"😃 Facial Emotion: {face_emotion}")
+    else:
+        print("⚠️ Could not get frame from webcam.")
+    
+    print("-" * 50)
+    again = input("🔁 Do you want to analyze again? (y/n): ").strip().lower()
+    if again != 'y':
+        print("👋 Exiting. Have a nice day!")
+        break
